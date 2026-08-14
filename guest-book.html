@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Week 5 Assignment: Event Guest Book</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 2rem; background: #f4f4f9; display: flex; justify-content: center; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        .form-group { margin-bottom: 1rem; display: flex; gap: 0.5rem; }
+        label { display: block; margin-bottom: 0.25rem; font-weight: 500; }
+        input { flex: 1; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+        button { background: #28a745; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; }
+        button:hover { background: #218838; }
+        
+        .stats-bar { display: flex; justify-content: space-between; background: #e9ecef; padding: 0.5rem 0.75rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; font-weight: 500; }
+        
+        .guest-list { list-style: none; padding: 0; margin: 0; }
+        .guest-list li { padding: 0.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .guest-list li:last-child { border-bottom: none; }
+        .counter-badge { background: #007bff; color: white; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>VIP Event Guest Book</h2>
+        <p>Type a name below to welcome them to the exclusive attendee list.</p>
+        
+        <label for="guestName">Guest Name:</label>
+        <div class="form-group">
+            <input type="text" id="guestName" placeholder="Enter full name...">
+            <button id="addBtn">Add</button>
+        </div>
+        
+        <div class="stats-bar">
+            <span>Total Attending:</span>
+            <span id="totalCounter" class="counter-badge">0</span>
+        </div>
+        
+        <!-- Target container for dynamic rendering -->
+        <ul id="guestListDisplay" class="guest-list">
+            <!-- Dynamic <li> elements will be injected here -->
+        </ul>
+    </div>
+
+    <script>
+        // Global Array to manage data points in memory
+        let guestArray = [];
+        
+        // Function to wrap array items in <li> tags and return a single string
+        function generateListHTML(listData) {
+            // Check if array is empty
+            if (listData.length === 0) {
+                return "";
+            }
+            
+            let combinedHTML = "";
+            // Loop through each element in the array
+            for (let i = 0; i < listData.length; i++) {
+                // Wrap the text in HTML <li> tags and append it
+                combinedHTML += `<li>${listData[i]}</li>`;
+            }
+            
+            return combinedHTML;
+        }
+
+        // Get references to DOM elements
+        const addBtn = document.getElementById('addBtn');
+        const guestNameInput = document.getElementById('guestName');
+        const totalCounter = document.getElementById('totalCounter');
+        const guestListDisplay = document.getElementById('guestListDisplay');
+
+        // Add a click event listener to the Add button
+        addBtn.addEventListener('click', function() {
+            // 1. Capture and Push Data
+            const newGuestName = guestNameInput.value;
+
+            // 2. Sanitize Data (check that it is not empty or just whitespace)
+            if (newGuestName.trim() !== "") {
+                // Add the sanitized string to our array
+                guestArray.push(newGuestName.trim());
+
+                // 3. Array Length Tracking
+                totalCounter.textContent = guestArray.length;
+
+                // 4. Trigger Loop Rendering
+                // Call our function and inject the returned HTML into the <ul> container
+                const listHTML = generateListHTML(guestArray);
+                guestListDisplay.innerHTML = listHTML;
+
+                // 5. UI Cleanup
+                // Reset the input field value to an empty string
+                guestNameInput.value = "";
+            }
+        });
+    </script>
+</body>
+</html>
