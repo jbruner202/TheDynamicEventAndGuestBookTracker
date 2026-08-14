@@ -11,7 +11,7 @@ This project is an interactive VIP Event Guest Book that utilizes JavaScript arr
 
 ## How to Run
 1. Clone or download this repository.
-2. Open `guest-book.html` directly in any web browser (Chrome, Firefox, Safari).
+2. Open `index.html` directly in any web browser (Chrome, Firefox, Safari).
 3. Test by adding new guests using the input field and "Add" button.
 
 ## AI Tools Used
